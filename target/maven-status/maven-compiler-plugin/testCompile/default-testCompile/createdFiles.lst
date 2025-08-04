@@ -1,7 +1,0 @@
-com/saucedemo/steps/LoginSteps.class
-com/saucedemo/SimpleTest.class
-com/saucedemo/pages/InventoryPage.class
-com/saucedemo/runners/CucumberTestRunner.class
-com/saucedemo/hooks/Hooks.class
-com/saucedemo/utils/DriverManager.class
-com/saucedemo/pages/LoginPage.class
