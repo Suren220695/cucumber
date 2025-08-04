@@ -1,0 +1,58 @@
+{
+  "users": {
+    "labour": {
+      "email": "kbender33@gmail.com",
+      "password": "Test@123",
+      "role": "labour"
+    },
+    "sales": {
+      "email": "troy@wiseconsigngreenhousecompany.com",
+      "password": "Test@123",
+      "role": "sales"
+    },
+    "foreman": {
+      "email": "issac@wiseconsigngreenhousecompany.com",
+      "password": "Test@123",
+      "role": "foreman"
+    },
+    "admin": {
+      "email": "max@michigangreenhousecompany.com",
+      "password": "Test@123",
+      "role": "admin"
+    }
+  },
+  "testData": {
+    "validCredentials": {
+      "labour": {
+        "email": "kbender33@gmail.com",
+        "password": "Test@123"
+      },
+      "sales": {
+        "email": "troy@wiseconsigngreenhousecompany.com",
+        "password": "Test@123"
+      },
+      "foreman": {
+        "email": "issac@wiseconsigngreenhousecompany.com",
+        "password": "Test@123"
+      },
+      "admin": {
+        "email": "max@michigangreenhousecompany.com",
+        "password": "Test@123"
+      }
+    },
+    "invalidCredentials": {
+      "wrongPassword": {
+        "email": "kbender33@gmail.com",
+        "password": "WrongPassword123"
+      },
+      "wrongEmail": {
+        "email": "nonexistent@example.com",
+        "password": "Test@123"
+      },
+      "emptyFields": {
+        "email": "",
+        "password": ""
+      }
+    }
+  }
+}
