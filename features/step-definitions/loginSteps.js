@@ -39,6 +39,11 @@ Then('I enter credentials based on role {string}', async function (role) {
 
 })
 
-Then('I verify the {string} is displayed', (s) => {
-  // Write code here that turns the phrase above into concrete actions
-})
+Then('I verify the {string} is displayed', async function (expectedText) {
+    if (expectedText === "Wisconsin Greenhouse Company") {
+        await loginPage.verifyWisconsinGreenhouseCompanyIsDisplayed();
+    } else {
+        // Generic verification for other text
+        await this.page.getByText(expectedText).waitFor({ state: 'visible', timeout: 10000 });
+    }
+});
