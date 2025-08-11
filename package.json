@@ -1,21 +1,40 @@
 {
   "name": "cucumber-playwright-tests",
   "version": "1.0.0",
-  "description": "Cucumber tests with Playwright",
+  "description": "Cucumber tests with Playwright for Trade Creation",
   "main": "index.js",
   "scripts": {
     "test": "cucumber-js",
     "test:headless": "cucumber-js --world-parameters '{\"headless\": true}'",
     "test:headed": "cucumber-js --world-parameters '{\"headless\": false}'",
     "test:login": "cucumber-js --tags @login",
+    "test:trade-creation": "cucumber-js --tags @trade-creation",
+    "test:happy-path": "cucumber-js --tags @happy-path",
+    "test:validation": "cucumber-js --tags @validation",
+    "test:date-validation": "cucumber-js --tags @date-validation",
+    "test:smoke": "cucumber-js --tags '@login or @trade-creation'",
+    "test:regression": "cucumber-js --tags '@login and @trade-creation'",
     "test:scenario-outline": "cucumber-js --tags @scenario-outline",
     "test:login-outline": "cucumber-js --tags '@login and @scenario-outline'",
     "test:labour": "cucumber-js --tags '@login and not @scenario-outline'",
     "test:roles": "cucumber-js --tags '@login and @scenario-outline'",
     "test:exclude-outline": "cucumber-js --tags '@login and not @scenario-outline'",
-    "test:all": "cucumber-js --tags '@login'"
+    "test:bid-creation": "cucumber-js --tags @bid-creation",
+    "test:bid-quick": "cucumber-js --tags @bid-creation and @quick",
+    "test:bid-runner": "node run-bid-tests.js",
+    "test:bid-syntax": "node test-bid-fix.js",
+    "test:all": "cucumber-js --tags '@login or @trade-creation or @bid-creation'",
+    "test:run": "node run-tests.js",
+    "test:debug": "cucumber-js --verbose --format progress",
+    "test:report": "cucumber-js --format html:reports/cucumber-report.html"
   },
-  "keywords": ["cucumber", "playwright", "testing", "bdd"],
+  "keywords": [
+    "cucumber",
+    "playwright",
+    "testing",
+    "bdd",
+    "trade-creation"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -23,4 +42,4 @@
     "@playwright/test": "^1.40.0",
     "playwright": "^1.40.0"
   }
-} 
+}

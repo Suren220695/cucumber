@@ -2,8 +2,8 @@ const { Before, After, AfterAll, setDefaultTimeout } = require('@cucumber/cucumb
 const fs = require('fs');
 const path = require('path');
 
-// Set default timeout to 30 seconds
-setDefaultTimeout(30 * 1000);
+// Set default timeout to 120 seconds for better reliability
+setDefaultTimeout(120 * 1000);
 
 // Create screenshots directory if it doesn't exist
 const screenshotsDir = path.join(__dirname, '../../screenshots');

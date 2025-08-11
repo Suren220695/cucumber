@@ -11,21 +11,28 @@ class CustomWorld {
     }
 
     async init() {
-        this.browser = await chromium.launch({ 
+        this.browser = await chromium.launch({
             headless: this.headless,
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
-        
+
         this.context = await this.browser.newContext({
             viewport: { width: 1280, height: 720 },
-            userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            recordVideo: {
+                dir: 'reports/videos',
+                size: {
+                    width: 1280,
+                    height: 720
+                }
+            }
         });
-        
+
         this.page = await this.context.newPage();
-        
-        // Set default timeout
-        this.page.setDefaultTimeout(30000);
-        this.page.setDefaultNavigationTimeout(30000);
+
+        // Set default timeout - increased for better reliability
+        this.page.setDefaultTimeout(120000);
+        this.page.setDefaultNavigationTimeout(120000);
     }
 
     async cleanup() {

@@ -9,7 +9,7 @@ Feature: Login Functionality
     When I launch the application URL
     Then the application should be loaded successfully
     And I click "Login" button
-    Then I enter credentials based on role "labour"
+    Then I enter credentials based on role "sales"
     And I verify the "Wisconsin Greenhouse Company" is displayed
 
   @login @scenario-outline @roles

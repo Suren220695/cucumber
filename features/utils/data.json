@@ -6,7 +6,7 @@
       "role": "labour"
     },
     "sales": {
-      "email": "troy@wiseconsigngreenhousecompany.com",
+      "email": "troy@wisconsingreenhousecompany.com",
       "password": "Test@123",
       "role": "sales"
     },
@@ -28,7 +28,7 @@
         "password": "Test@123"
       },
       "sales": {
-        "email": "troy@wiseconsigngreenhousecompany.com",
+        "email": "troy@wisconsingreenhousecompany.com",
         "password": "Test@123"
       },
       "foreman": {
