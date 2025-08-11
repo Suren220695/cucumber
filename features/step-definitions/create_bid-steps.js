@@ -45,7 +45,16 @@ When('I choose duration {string} {string} {string} {string}', async function (ye
 
 When('I click {string}', async function (buttonText) {
     console.log("I click " + buttonText);
-    await bidCreationPage.clickNextButton();
+    if (buttonText == "Next") {
+        await bidCreationPage.clickNextButton();
+    } else if (buttonText == "Submit") {
+        await bidCreationPage.clickSubmitButton();
+    } else if (buttonText == "Proceed") {
+        await bidCreationPage.clickProceedButton();
+    } else if (buttonText == "Ok") {
+        await bidCreationPage.clickOkButton();
+    }
+
 
 
 });

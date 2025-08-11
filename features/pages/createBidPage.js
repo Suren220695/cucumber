@@ -11,6 +11,9 @@ class createBidPage {
         //input[@placeholder="MMMM DD, YYYY hh:mm aa"]
         this.timeInput = this.page.locator('//input[@placeholder="MMMM DD, YYYY hh:mm aa"]');
         this.nextButton = this.page.locator('//button[text()="Next"]');
+        this.submitButton = this.page.locator('//button[text()="Submit"]');
+        this.proceedButton = this.page.locator('//button[text()="Proceed"]');
+        this.okButton = this.page.locator('//button[text()="Ok"]');
         this.locattionMiles = this.page.locator('(//input[@type="text"])[10]');
 
 
@@ -117,6 +120,18 @@ class createBidPage {
 
     async clickNextButton() {
         await this.nextButton.click();
+    }
+
+    async clickSubmitButton() {
+        await this.submitButton.click();
+    }
+
+    async clickProceedButton() {
+        await this.proceedButton.click();
+    }
+
+    async clickOkButton() {
+        await this.okButton.click();
     }
 
     async selectYesForIsThisAHistoricBuilding(question) {
