@@ -5,14 +5,17 @@
     "main": "index.js",
     "scripts": {
         "test": "cucumber-js",
-        "test:headless": "cucumber-js --world-parameters '{\"headless\": true}'",
-        "test:headed": "cucumber-js --world-parameters '{\"headless\": false}'",
-        "test:headed:slow": "cucumber-js --world-parameters '{\"headless\": false}' --parallel 1",
-        "test:chrome": "cucumber-js --world-parameters '{\"headless\": false, \"browserType\": \"chromium\"}'",
-        "test:chrome:debug": "cucumber-js --world-parameters '{\"headless\": false, \"browserType\": \"chromium\"}' --parallel 1",
-        "test:firefox": "cucumber-js --world-parameters '{\"headless\": false, \"browserType\": \"firefox\"}'",
-        "test:webkit": "cucumber-js --world-parameters '{\"headless\": false, \"browserType\": \"webkit\"}'",
-        "report": "cucumber-js --format html:cucumber-report.html"
+        "test:headless": "cucumber-js --world-parameters '{\"headless\": true}' --format ./utils/reporter.js",
+        "test:headed": "cucumber-js --world-parameters '{\"headless\": false}' --format ./utils/reporter.js",
+        "test:headed:slow": "cucumber-js --world-parameters '{\"headless\": false}' --parallel 1 --format ./utils/reporter.js",
+        "test:chrome": "cucumber-js --world-parameters '{\"headless\": false, \"browserType\": \"chromium\"}' --format ./utils/reporter.js",
+        "test:chrome:debug": "cucumber-js --world-parameters '{\"headless\": false, \"browserType\": \"chromium\"}' --parallel 1 --format ./utils/reporter.js",
+        "test:firefox": "cucumber-js --world-parameters '{\"headless\": false, \"browserType\": \"firefox\"}' --format ./utils/reporter.js",
+        "test:webkit": "cucumber-js --world-parameters '{\"headless\": false, \"browserType\": \"webkit\"}' --format ./utils/reporter.js",
+        "report": "cucumber-js --format html:cucumber-report.html",
+        "allure:generate": "allure generate allure-results -o allure-report --clean",
+        "allure:open": "allure open allure-report",
+        "allure:serve": "allure serve allure-results"
     },
     "keywords": [
         "cucumber",
@@ -25,6 +28,9 @@
     "devDependencies": {
         "@cucumber/cucumber": "^10.0.1",
         "@playwright/test": "^1.40.0",
+        "allure-commandline": "^2.24.1",
+        "allure-cucumberjs": "^2.15.1",
+        "allure-js-commons": "^2.15.1",
         "playwright": "^1.40.0"
     },
     "dependencies": {
