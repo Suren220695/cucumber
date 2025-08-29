@@ -48,9 +48,56 @@ Feature: Create a Bid as a Sales User
     And I click "Submit"
     And I click "Proceed"
     And I click "Ok"
-    # Then the form should reflect the entered asset information
-    # And I enable required switches and checkboxes
-    # And I enter quantity "33"
-    # And I click "Next"
-    # And I click "Submit"
-    # Then I confirm the bid by clicking "Proceed" and "Ok"
+
+  @create-bid-new
+  Scenario: Sales user creates a bid for  new foundation
+    When I click the "Create Bid" button
+    And I select customer "Mike    Wade"
+    And I select property "Bell Residence"
+    And I select the date "2027" "1"
+    And I choose the greenhouse "P.4"
+    And I choose duration "2027" "1" "8" "10"
+    And I click "Next"
+    Given the user clicks the "Trade Question" tab
+    When the user enters "12" as the Width of the Greenhouse in feet
+    And the user enters "6" as the Width of the Greenhouse in inches
+    And I click "Submit"
+    And I click "Proceed"
+    And I click "Ok"
+    And I click "View"
+    And I click "Submit"
+    And I click "Continue"
+    And I click "Create Estimate"
+    And I click "Ok"
+    And I click "Expand Row"
+# Edit a task in the Bom tab
+    When the user fills BOM details:
+      | vendorName     | vendorAddress | product              | productAddress | optionValue | quantity |
+      | Marling Lumber | Atlas Ave     | Andersen Storm Doors |  613 Atlas Ave | b           |       50 |
+      | Marling Lumber | Atlas Ave     | Andersen Storm Doors |  613 Atlas Ave | b           |       50 |
+# 
+    And I click expand row "2"
+    Given I edit a task with following details
+      | value | unit  |
+      |   100 | sq.ft |
+      |   100 | ft    |
+      |   100 | sq.ft |
+      |   100 | ft    |
+      |   100 | sq.ft |
+      |   100 | ft    |
+      |   100 | ft    |
+# Delete all tasks in the Gantt Tasks tab
+    And I delete all tasks in the Gantt Tasks tab
+#  task in the Tax tab
+    And I click "Create Estimate again"
+    Then validate the active tab is "Tax" is visible
+    When I fill the Tax Terms tab with details
+      | taxTerm | taxName | taxPercentage |
+      | PO      | Tax1    |             2 |
+      | Invoice | Tax1    |             2 |
+    And I click "Ok"
+    Then validate the active tab is "Gantt Tasks" is visible
+    And I click "Create Estimate again"
+    And I click "Confirm"
+    When I send and approve the estimate
+ # finished in the Tax tab

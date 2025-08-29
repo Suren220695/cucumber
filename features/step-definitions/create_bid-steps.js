@@ -2,7 +2,7 @@ const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const createBidPage = require('../pages/createBidPage');
 
-setDefaultTimeout(60 * 1000);
+setDefaultTimeout(90 * 1000);
 
 let bidCreationPage;
 
@@ -12,6 +12,7 @@ When('I click the {string} button', async function (buttonText) {
     console.log("I click the " + buttonText + " button");
 
     bidCreationPage = new createBidPage(this.page);
+    await bidCreationPage.page.waitForTimeout(3000);
     await bidCreationPage.clickCreateBidButton();
     console.log("I click the " + buttonText + " button");
 });
@@ -53,14 +54,45 @@ When('I click {string}', async function (buttonText) {
         await bidCreationPage.clickProceedButton();
     } else if (buttonText == "Ok") {
         await bidCreationPage.clickOkButton();
+    } else if (buttonText == "View") {
+        await bidCreationPage.clickViewButton();
+    } else if (buttonText == "Continue") {
+        await bidCreationPage.clickContinueButton();
+    } else if (buttonText == "Create Estimate") {
+        await bidCreationPage.clickCreateEstimateButton();
+    } else if (buttonText == "Expand Row") {
+        await bidCreationPage.clickExpandRowButton();
+    } else if (buttonText == "Red Action Button") {
+        await bidCreationPage.clickRedActionButton();
+    } else if (buttonText == "Edit") {
+        await bidCreationPage.clickEditButton();
+    } else if (buttonText == "Update") {
+        await bidCreationPage.clickUpdateButton();
+    } else if (buttonText == "save") {
+        await bidCreationPage.clickSaveButton();
+    } else if (buttonText == "Delete") {
+        await bidCreationPage.clickDeleteButton(buttonText);
+    } else if (buttonText == "Create Estimate again") {
+        await bidCreationPage.clickCreateEstimateButtonAgain();
+    } else if (buttonText == "Confirm") {
+        await bidCreationPage.clickConfirmButton();
     }
 
-
-
 });
+
+
+When('I click expand row {string}', async function (rowNumber) {
+    await bidCreationPage.clickExpandRowButtonInRow(rowNumber);
+});
+
+
+
+
+
 
 When('I enable required switches and checkboxes', async function () {
 });
+
 
 When('I enter quantity {string}', async function (quantity) {
     console.log("I enter quantity " + quantity);
@@ -132,7 +164,13 @@ When('the user enters {string} into the wind exposure field', async function (wi
 // # Then the form should reflect the entered asset information
 
 Given('the user clicks the {string} tab', async function (tabName) {
-    await bidCreationPage.clickTradeQuestionTab(tabName);
+    if (tabName == "Trade Question") {
+        await bidCreationPage.clickTradeQuestionTab(tabName);
+    } else if (tabName == "Bom") {
+        await bidCreationPage.clickBomTab();
+    } else if (tabName == "TAX") {
+        await bidCreationPage.clickGanttTasksTab();
+    }
 });
 
 When('the user enters {string} as the Width of the Greenhouse in feet', async function (width) {
@@ -220,6 +258,87 @@ When('user enters quantity for Single Awning Vent as {string}', async function (
 When('user enters quantity for Double Awning Vent as {string}', async function (quantity) {
     await bidCreationPage.enterDoubleAwningVent(quantity)
 });
+
+When('the user fills BOM details:', async function (dataTable) {
+
+    const bomDetails = dataTable.hashes(); // take first row from table
+    await bidCreationPage.page.waitForTimeout(3000);
+
+    for (const bomDetail of bomDetails) {
+        const { vendorName, vendorAddress, product, productAddress, optionValue, quantity } = bomDetail;
+        console.log("the user fills BOM details: " + vendorName + " " + vendorAddress + " " + product + " " + productAddress + " " + optionValue + " " + quantity);
+
+        await bidCreationPage.page.waitForTimeout(3000);
+        await bidCreationPage.clickRedActionButton();
+        await bidCreationPage.clickEditButton();
+        await bidCreationPage.clickBomTab();
+        await bidCreationPage.addBom({
+            vendorName,
+            vendorAddress,
+            product,
+            productAddress,
+            optionValue,
+            quantity
+        });
+        await bidCreationPage.clickSaveButton();
+        await bidCreationPage.clickUpdateButton();
+        await bidCreationPage.clickOkButton();
+    }
+
+
+
+
+
+
+});
+
+Given('I edit a task with following details', async function (dataTable) {
+
+    await bidCreationPage.page.waitForTimeout(3000);
+    const editTaskDetails = dataTable.hashes(); // take first row from table
+    for (const editTaskDetail of editTaskDetails) {
+        const { value, unit } = editTaskDetail;
+        console.log("I edit a task with following details: " + value + " " + unit);
+        await bidCreationPage.clickRedActionButton();
+        await bidCreationPage.clickEditButton();
+        await bidCreationPage.enterEditTaskInput(value);
+        await bidCreationPage.selectEditTaskUnitSelection(unit);
+        await bidCreationPage.clickUpdateButton();
+        await bidCreationPage.clickOkButton();
+    }
+
+
+
+});
+
+Given('I delete all tasks in the Gantt Tasks tab', async function () {
+    await bidCreationPage.deleteAllTasksInTab();
+});
+
+Then('validate the active tab is {string} is visible', async function (tabName) {
+    await bidCreationPage.validateActiveTabIsVisible(tabName);
+});
+
+When('I fill the Tax Terms tab with details', async function (dataTable) {
+    await bidCreationPage.page.waitForTimeout(3000);
+    const taxTermsDetails = dataTable.hashes(); // take first row from table
+
+    for (const taxTermDetails of taxTermsDetails) {
+        const { taxTerm, taxName, taxPercentage } = taxTermDetails;
+        console.log("I fill the Tax Terms tab with details: " + taxTerm + " " + taxName + " " + taxPercentage);
+        await bidCreationPage.fillTaxTermsTab(taxTerm, taxName, taxPercentage);
+        await bidCreationPage.clickUpdateButton();
+    }
+
+});
+
+When('I send and approve the estimate', async () => {
+    await bidCreationPage.sendAndApproveEstimate();
+})
+
+
+
+
 
 
 

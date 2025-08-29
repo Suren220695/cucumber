@@ -2,8 +2,8 @@ const testData = require('../utils/data.json');
 class LoginPage {
     constructor(page) {
         this.page = page;
-        // this.url = 'https://ca-gmscloud-webapps-ncus-st.whiteground-c828087f.northcentralus.azurecontainerapps.io/';
-        this.url = "https://qa.gracefulmanagement.com/"
+        this.url = 'https://ca-gmscloud-webapps-ncus-st.whiteground-c828087f.northcentralus.azurecontainerapps.io/';
+        // this.url = "https://qa.gracefulmanagement.com/"
 
         // Page elements - these would need to be updated based on actual page structure
         // this.usernameInput = '[data-testid="username"]';
