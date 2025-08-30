@@ -10,10 +10,15 @@ let bidCreationPage;
 
 When('I click the {string} button', async function (buttonText) {
     console.log("I click the " + buttonText + " button");
-
     bidCreationPage = new createBidPage(this.page);
     await bidCreationPage.page.waitForTimeout(3000);
-    await bidCreationPage.clickCreateBidButton();
+    if(buttonText == "Contract"){
+        await bidCreationPage.clickContractButton();
+    }else if(buttonText == "Create Bid"){
+        await bidCreationPage.clickCreateBidButton();
+    }else{
+        await bidCreationPage.clickCreateBidButton();
+    }
     console.log("I click the " + buttonText + " button");
 });
 

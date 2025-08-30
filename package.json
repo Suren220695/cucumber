@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cucumber-js",
     "test:headless": "cucumber-js --world-parameters '{\"headless\": true}'",
-    "test:headed": "cucumber-js --world-parameters '{\"headless\": false}' --tags @create-bid-new ",
+    "test:headed": "cucumber-js --world-parameters '{\"headless\": false}' --tags  @create-bid ",
     "test:login": "cucumber-js --tags @login",
     "test:trade-creation": "cucumber-js --tags @trade-creation",
     "test:happy-path": "cucumber-js --tags @happy-path",

@@ -1,12 +1,13 @@
 {
   "users": {
+
     "labour": {
       "email": "kbender33@gmail.com",
       "password": "Test@123",
       "role": "labour"
     },
     "sales": {
-      "email": "troy@wisconsingreenhousecompany.com",
+      "email": "ethan@wisconsingreenhousecompany.com",
       "password": "Test@123",
       "role": "sales"
     },
@@ -20,6 +21,12 @@
       "password": "Test@123",
       "role": "admin"
     }
+    ,
+      "customer": {
+        "email": "turnerjd@wwt.net",
+        "password": "Test@123",
+        "role": "customer"
+      }
   },
   "testData": {
     "validCredentials": {

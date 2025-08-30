@@ -16,6 +16,7 @@ class createBidPage {
         this.submitButton = this.page.locator('//button[text()="Submit"]');
         this.proceedButton = this.page.locator('//button[text()="Proceed"]');
         this.confirmButton = this.page.locator('//button[text()="Confirm"]');
+        this.contractButton = this.page.locator('//button[text()="Contract"]');
 
         this.sendEstimateButton = this.page.locator('//button[contains(., "Send Estimate")]');
         this.approveEstimateButton = this.page.locator("//button[contains(.,'Approve Estimate')]");
@@ -57,8 +58,8 @@ class createBidPage {
         await button.scrollIntoViewIfNeeded();
         await button.click();
         await this.page.waitForTimeout(3000);
-      }
-      
+    }
+
 
     async selectCustomer(customerName) {
         await this.page.getByRole('combobox', { name: 'Customer Name' }).click();
@@ -427,8 +428,8 @@ class createBidPage {
     }
 
     async enterNumberOfTrusses(trusses) {
-        await this.page.locator('#demo-helper-text-aligned').nth(4).click();
-        await this.page.locator('#demo-helper-text-aligned').nth(4).fill(trusses);
+        await this.page.locator("//p[normalize-space(text())='Enter the number of Trusses Required .(Optional)']/following::input[1]").click();
+        await this.page.locator("//p[normalize-space(text())='Enter the number of Trusses Required .(Optional)']/following::input[1]").fill(trusses);
     }
 
     async selectAwningVentType(ventType) {
@@ -437,13 +438,13 @@ class createBidPage {
 
     //Double Awning Vent
     async enterDoubleAwningVent(quantity) {
-        await this.page.locator('(//input[@id="demo-helper-text-aligned"])[6]').click();
-        await this.page.locator('(//input[@id="demo-helper-text-aligned"])[6]').fill(quantity);
+        await this.page.locator("//p[normalize-space(text())='Enter the desired quantity']/following::input[1]").click();
+        await this.page.locator("//p[normalize-space(text())='Enter the desired quantity']/following::input[1]").fill(quantity);
 
     }
     async enterSingleAwningVent(quantity) {
-        await this.page.locator('(//input[@id="demo-helper-text-aligned"])[6]').click();
-        await this.page.locator('(//input[@id="demo-helper-text-aligned"])[6]').fill(quantity);
+        await this.page.locator("//p[normalize-space(text())='Enter the desired quantity']/following::input[1]").click();
+        await this.page.locator("//p[normalize-space(text())='Enter the desired quantity']/following::input[1]").fill(quantity);
     }
 
 
@@ -664,6 +665,34 @@ class createBidPage {
     }
 
 
+
+    async clickContractButton() {
+        await this.page.waitForTimeout(3000);
+
+        try {
+            await PageUtilClassName.waitForElementToBeStable(this.contractButton, this.page);
+            await this.contractButton.scrollIntoViewIfNeeded();
+            await this.contractButton.click();
+            await PageUtilClassName.waitForPageLoad(this.page);
+            await this.page.waitForTimeout(3000);
+        } catch (error) {
+
+            console.log("cannot find contract button");
+            console.log("navigating to /contract");
+            let url = this.page.url();
+            console.log("url: " + url + " and url.split('/')[0]: " + url.split("/")[0] + "//" + url.split("/")[2]);
+            await this.page.goto(url.split("/")[0] + "//" + url.split("/")[2] + '/contract');
+            await PageUtilClassName.waitForPageLoad(this.page);
+            await this.page.waitForTimeout(3000);
+
+        }
+
+
+
+        // /contract
+    }
+
+
     async sendAndApproveEstimate() {
         await PageUtilClassName.scrollBottomThenUp(this.page);
         await this.clickSendEstimateButton();
@@ -673,8 +702,6 @@ class createBidPage {
         await this.clickOkButton();
 
     }
-
-
 
 
 

@@ -43,7 +43,7 @@ Feature: Create a Bid as a Sales User
     And user selects Greenhouse Frame Color as "Black"
     And user selects Doors option as "No"
     And user selects Awning Vent type as "Double"
-    And user enters quantity for Double Awning Vent as "3"
+    And user enters quantity for Double Awning Vent as "3" 
     And I click "Next"
     And I click "Submit"
     And I click "Proceed"
