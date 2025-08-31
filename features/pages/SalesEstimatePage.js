@@ -209,6 +209,12 @@ class SalesEstimatePage {
       
 
 
+    async clickCreateEstimateButton() {
+        await this.page.getByRole('button', { name: 'Create Estimate' }).first().click();
+        await this.page.waitForTimeout(3000);
+    }
+
+
 
 
 

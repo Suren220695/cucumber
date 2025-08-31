@@ -215,3 +215,4 @@ Given('I am on the dashboard page', async function () {
         throw error;
     }
 });
+

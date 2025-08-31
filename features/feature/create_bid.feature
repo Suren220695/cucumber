@@ -54,9 +54,9 @@ Feature: Create a Bid as a Sales User
     When I click the "Create Bid" button
     And I select customer "Mike    Wade"
     And I select property "Bell Residence"
-    And I select the date "2027" "1"
+    And I select the date "2027" "6"
     And I choose the greenhouse "P.4"
-    And I choose duration "2027" "1" "8" "10"
+    And I choose duration "2027" "6" "8" "10"
     And I click "Next"
     Given the user clicks the "Trade Question" tab
     When the user enters "12" as the Width of the Greenhouse in feet

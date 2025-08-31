@@ -1,5 +1,7 @@
 const PageUtilClassName = require('./commonUtils/PageUtils');
 
+
+
 class createBidPage {
     constructor(page) {
         this.page = page;

@@ -25,7 +25,7 @@ When('I complete all active tasks', async function () {
     await salesEstimationPage.completeAllTasks();
 })
 
-Then('I should be navigated to the Contract page', async function (){
+Then('I should be navigated to the Contract page', async function () {
     await salesEstimationPage.navigateToContractPage();
 })
 
@@ -47,4 +47,8 @@ When('I attach a PDF file', async function () {
 
 Then('the PDF file should be uploaded and validated successfully', async function () {
     await salesEstimationPage.validatePDFFileUpload();
-})  
+})
+
+Then('I click the {string} button in the Sales Estimate page', async function () {
+    await salesEstimationPage.clickCreateEstimateButton();
+})

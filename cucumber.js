@@ -5,6 +5,6 @@ module.exports = {
     formatOptions: { snippetInterface: 'async-await' },
     paths: ['features/feature/*.feature']
   }
-}; 
+};
 
 

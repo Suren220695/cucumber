@@ -20,3 +20,4 @@ Feature: Sales Estimation Functionality
     When I click the "Save" button
     Then I should see the "Contract Upload Successfully" popup
     And I click the "OK" button
+
