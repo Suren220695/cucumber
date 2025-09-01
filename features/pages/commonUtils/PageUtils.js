@@ -1,5 +1,5 @@
 // utils/PageUtilClassName.js
-class PageUtilClassName {
+class PageUtil {
 
 
     static async scrollBottomThenUp(page, opts = {}) {
@@ -167,4 +167,4 @@ class PageUtilClassName {
 
 }
 
-module.exports = PageUtilClassName;
+module.exports = PageUtil;

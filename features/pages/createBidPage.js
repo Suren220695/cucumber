@@ -1,4 +1,4 @@
-const PageUtilClassName = require('./commonUtils/PageUtils');
+const PageUtils = require('./commonUtils/PageUtils');
 
 
 
@@ -164,7 +164,7 @@ class createBidPage {
         await this.page.waitForTimeout(3000);
         await this.page.waitForLoadState('load');
         await this.sendEstimateButton.waitFor({ state: 'visible' });
-        await PageUtilClassName.waitForElementToBeStable(this.sendEstimateButton, this.page);
+        await PageUtils.waitForElementToBeStable(this.sendEstimateButton, this.page);
         await this.sendEstimateButton.scrollIntoViewIfNeeded();
         await this.sendEstimateButton.click();
     }
@@ -173,7 +173,7 @@ class createBidPage {
         await this.page.waitForTimeout(3000);
         await this.page.waitForLoadState('load');
         await this.approveEstimateButton.waitFor({ state: 'visible' });
-        await PageUtilClassName.waitForElementToBeStable(this.approveEstimateButton, this.page);
+        await PageUtils.waitForElementToBeStable(this.approveEstimateButton, this.page);
         await this.approveEstimateButton.scrollIntoViewIfNeeded();
         await this.approveEstimateButton.click();
     }
@@ -181,7 +181,7 @@ class createBidPage {
     async clickSubmitButton() {
         await this.page.waitForTimeout(3000);
         await this.submitButton.waitFor({ state: 'visible' });
-        await PageUtilClassName.waitForElementToBeStable(this.submitButton, this.page);
+        await PageUtils.waitForElementToBeStable(this.submitButton, this.page);
         await this.submitButton.scrollIntoViewIfNeeded();
         await this.submitButton.click();
     }
