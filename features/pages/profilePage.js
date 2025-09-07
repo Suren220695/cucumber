@@ -41,7 +41,6 @@ class ProfilePage {
         expect(activeTab).toContain("Personal info");
         console.log("✅ Profile page is active: " + activeTab);
         return activeTab;
-
     }
 
 
