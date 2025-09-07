@@ -1,5 +1,5 @@
 const { setWorldConstructor } = require('@cucumber/cucumber');
-const { chromium } = require('playwright');
+const { chromium, firefox, webkit } = require('playwright');
 
 class CustomWorld {
     constructor({ parameters }) {
@@ -8,10 +8,29 @@ class CustomWorld {
         this.context = null;
         this.page = null;
         this.headless = parameters.headless !== false; // Default to headless mode
+         this.browserName = parameters.browser || 'firefox'; // Default chromium
     }
 
     async init() {
-        this.browser = await chromium.launch({
+
+
+
+               let browserType;
+               switch (this.browserName.toLowerCase()) {
+            case 'firefox':
+                browserType = firefox;
+                break;
+            case 'webkit': // Safari engine
+                browserType = webkit;
+                break;
+            case 'edge': 
+            case 'chromium':
+            default:
+                browserType = chromium;
+        }
+
+
+       this.browser = await browserType.launch({
             headless: this.headless,
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });

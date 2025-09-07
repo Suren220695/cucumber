@@ -59,6 +59,8 @@ class LoginPage {
         }
 
         // Wait for form elements to be visible
+
+        
         await this.page.getByRole('textbox', { name: 'Email Address' }).waitFor({ state: 'visible' });
         await this.page.getByRole('textbox', { name: 'Password' }).waitFor({ state: 'visible' });
         await this.page.getByRole('button', { name: 'Sign in' }).waitFor({ state: 'visible' });

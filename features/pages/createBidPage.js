@@ -7,6 +7,7 @@ class createBidPage {
         this.page = page;
         //button[text()='Create Bid']
         this.createBidButton = this.page.locator('//button[text()="Create Bid"]');
+        this.dashBoardTitle = this.page.getByText(' COMPANY DASHBOARD');
         //input[@placeholder="MMMM DD, YYYY"]
         this.dateInput = this.page.locator('//input[@placeholder="MMMM DD, YYYY"]');
         ////div[@title="P.3"]
@@ -52,14 +53,31 @@ class createBidPage {
     }
 
     async clickCreateBidButton() {
+
+        await this.page.waitForURL('**/salesestimate', { timeout: 10000 });
         console.log("clickCreateBidButton");
-        await PageUtilClassName.waitForPageLoad(this.page);
+         await PageUtils.waitForPageLoad(this.page);
+        //  await this.dashBoardTitle.waitFor({ state: 'visible' });
+        //  await PageUtils.waitForElementToBeStable(this.dashBoardTitle, this.page);
         await this.page.waitForTimeout(3000);
         const button = this.createBidButton;
-        await PageUtilClassName.waitForElementToBeStable(button, this.page);
+        await PageUtils.waitForElementToBeStable(button, this.page);
         await button.scrollIntoViewIfNeeded();
         await button.click();
         await this.page.waitForTimeout(3000);
+        const currentUrl = await this.page.url();
+        console.log("Current URL after clicking Create Bid: " + currentUrl);
+        // Check if URL contains "commondashboard"
+if (currentUrl.includes("commondashboard")) {
+    console.log("✅ URL contains commondashboard");
+    // 👉 your code logic here
+     await button.click();
+} else if (currentUrl.includes("salesestimate")) {
+    await button.click();
+    
+} {
+    console.log("❌ URL does not contain commondashboard");
+}
     }
 
 

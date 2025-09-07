@@ -11,10 +11,7 @@ class ProfilePage {
         this.profileButton = this.page.getByRole('menuitem', { name: 'Profile' })
         this.profileSettings = this.page.locator("//ul[@role='menu']//li[.//text()[normalize-space()='Settings']]")
         this.logout = this.page.locator("//ul[@role='menu']//li[.//text()[normalize-space()='Logout']]")
-
         this.profilePageActiveTab = this.page.locator("//button[@aria-selected='true']")
-
-
     }
 
 

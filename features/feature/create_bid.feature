@@ -9,7 +9,7 @@ Feature: Create a Bid as a Sales User
 
   @create-bid
   Scenario: Sales user creates a bid for a customer and property
-    When I click the "Create Bid" button
+    When I click the "Create Bid" button 
     And I select customer "Darrel   Turner"
     And I select property "barn"
     And I select the date "2027" "1"
@@ -101,3 +101,5 @@ Feature: Create a Bid as a Sales User
     And I click "Confirm"
     When I send and approve the estimate
  # finished in the Tax tab
+
+

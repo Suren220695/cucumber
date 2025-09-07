@@ -17,11 +17,6 @@ class SalesEstimatePage {
         this.activeTaskButton = this.page.getByText('Active Task');
         this.soldProductionButton = this.page.locator('//img[@src="/static/media/GmsLogo.f1033cac95ed5890f259.png"]/ancestor::div[contains(@class,"topbar-left-content")]//button');
         this.attachPDFButton = this.page.locator('//button[@class="secondaryButton"]');
-
-
-
-
-
     }
 
     async clockIn() {
