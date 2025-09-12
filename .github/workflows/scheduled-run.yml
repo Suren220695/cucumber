@@ -28,6 +28,8 @@ jobs:
       #     curl -X POST -H 'Content-type: application/json' --data "{\"text\":\":large_blue_circle: Test Execution Started.\"}" $SLACK_WEBHOOK_URL
 
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for proper git operations
 
       - uses: actions/setup-node@v4
         with:
@@ -55,18 +57,27 @@ jobs:
           git config --global user.email "surendaranpalani@gmail.com"
           git config --global user.name "Suren220695"
 
-      - name: Create and commit GitHub Pages branch
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: |
-          git add allure-report
-          git checkout --orphan gh-pages
-          git commit -m "Deploy Allure report to GitHub Pages"
-          git remote set-url origin https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}
-          git push -f origin gh-pages
+          # Check if gh-pages branch exists
+          if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            git checkout gh-pages
+            git pull origin gh-pages
+          else
+            git checkout --orphan gh-pages
+          fi
 
-      - name: Clean up
-        run: |
-          git checkout features/defender
-          git branch -D gh-pages
+          # Remove all files except .git
+          git rm -rf . || true
+
+          # Add allure-report files
+          cp -r allure-report/* . || true
+          git add .
+
+          # Commit and push
+          git commit -m "Deploy Allure report to GitHub Pages" || true
+          git push origin gh-pages
 
       - name: Set test result output
         id: set_test_result
@@ -92,7 +103,7 @@ jobs:
   #     - name: Send Slack notification
   #       env:
   #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-  #         GITHUB_PAGES_URL: "https://${{ github.repository_owner }}.github.io/qa-automation/allure-report"
+  #         GITHUB_PAGES_URL: "https://${{ github.repository_owner }}.github.io/${{ github.repository_name }}"
   #         TEST_STATUS: ${{ env.TEST_STATUS }}
 
   #       run: |
