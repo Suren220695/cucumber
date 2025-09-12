@@ -58,7 +58,6 @@ jobs:
           git config --global user.name "Suren220695"
 
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: |
           # Check if gh-pages branch exists
           if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
