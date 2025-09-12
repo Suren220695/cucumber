@@ -36,7 +36,6 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
-          cache-dependency-path: cucumber/package-lock.json
 
       - name: Install dependencies
         working-directory: ./cucumber
