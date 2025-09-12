@@ -34,23 +34,19 @@ jobs:
           node-version: "20.x"
 
       - name: Install dependencies
-        working-directory: ./cucumber
         run: npm ci
 
       - name: Install Playwright Browsers
-        working-directory: ./cucumber
         run: npx playwright install --with-deps
 
       - name: Run Playwright Cucumber tests
         id: run_tests
-        working-directory: ./cucumber
         run: |
           npx cucumber-js --tags '${{ github.event.inputs.cucumber_tags || '@regression' }}' --world-parameters '{"headless": true, "environment": "${{ github.event.inputs.environment || 'production' }}"}'
           echo "exit_code=$?" >> $GITHUB_ENV
         continue-on-error: true
 
       - name: Generate Allure report
-        working-directory: ./cucumber
         run: |
           npx allure generate allure-results --clean -o allure-report
 
