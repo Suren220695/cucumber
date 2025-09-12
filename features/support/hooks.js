@@ -2,17 +2,6 @@ const { Before, After, AfterAll } = require('@cucumber/cucumber');
 const AllureReporter = require('../../utils/reporter');
 
 Before(async function () {
-    // Check if headless parameter is passed from command line
-    const worldParams = this.parameters || {};
-    if (worldParams.headless !== undefined) {
-        this.headless = worldParams.headless;
-    }
-
-    // Check if browser type is passed from command line
-    if (worldParams.browserType !== undefined) {
-        this.browserType = worldParams.browserType;
-    }
-
     await this.init();
 });
 
@@ -69,7 +58,7 @@ After(async function (scenario) {
 
 AfterAll(async function () {
     console.log('All tests completed');
-    
+
     // Initialize and finalize Allure reporting
     const allureReporter = new AllureReporter();
     await allureReporter.finalize();

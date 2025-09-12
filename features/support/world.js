@@ -2,13 +2,14 @@ const { setWorldConstructor } = require('@cucumber/cucumber');
 const { chromium, firefox, webkit } = require('playwright');
 
 class CustomWorld {
-    constructor() {
+    constructor({ parameters = {} } = {}) {
         this.browser = null;
         this.page = null;
         this.context = null;
         this.baseUrl = 'https://backoffice-stg.tod-multiverse.com/login'; // Using a reliable test URL
-        this.headless = false; // Default to headless mode as per user preference
-        this.browserType = 'chromium'; // Default to chromium (Chrome)
+        this.headless = parameters.headless !== undefined ? parameters.headless : true; // Default to headless mode as per user preference
+        this.browserType = parameters.browserType || 'chromium'; // Default to chromium (Chrome)
+        this.environment = parameters.environment || 'production'; // Store environment parameter
         this.loginPage = null; // Will be initialized in step definitions
     }
 
