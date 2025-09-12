@@ -60,6 +60,7 @@ jobs:
           git add .
           git checkout --orphan gh-pages
           git commit -m "Deploy Allure report to GitHub Pages"
+          git remote set-url origin https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
           git push -f origin gh-pages
 
       - name: Clean up
