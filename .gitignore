@@ -5,9 +5,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # Test results and reports
-allure-results/
-allure-report/
-cucumber-report.html
 screenshots/
 
 # Environment variables
