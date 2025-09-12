@@ -52,8 +52,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "surendaran@builder.io"
-          git config --global user.name "Suren2206"
+          git config --global user.email "surendaranpalani@gmail.com"
+          git config --global user.name "Suren220695"
 
       - name: Create and commit GitHub Pages branch
         run: |
