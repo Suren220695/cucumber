@@ -29,11 +29,13 @@ This project contains automated tests for the login functionality using Cucumber
 ## Installation
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Install Playwright browsers:
+
 ```bash
 npx playwright install chromium
 ```
@@ -53,21 +55,25 @@ The framework is configured with the following settings:
 ## Running Tests
 
 ### Run all tests in headless mode (default)
+
 ```bash
 npm test
 ```
 
 ### Run tests in headed mode (visible browser)
+
 ```bash
 npm run test:headed
 ```
 
 ### Run tests with HTML report
+
 ```bash
 npm run report
 ```
 
 ### Run specific scenarios
+
 ```bash
 npx cucumber-js --tags "@login"
 ```
@@ -133,6 +139,7 @@ The login page contains the following elements (based on the provided HTML):
 ### Debug Mode
 
 Run tests with additional logging:
+
 ```bash
 DEBUG=pw:api npm test
 ```
@@ -146,4 +153,4 @@ DEBUG=pw:api npm test
 
 ## License
 
-ISC 
+ISC
