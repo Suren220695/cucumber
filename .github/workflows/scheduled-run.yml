@@ -1,4 +1,4 @@
-name: Test Execution With Threshold
+name: Test Execution
 
 on:
   workflow_dispatch:
@@ -21,11 +21,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Test Started Notification to Slack
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\":large_blue_circle: Test Execution Started.\"}" $SLACK_WEBHOOK_URL
+      # - name: Send Test Started Notification to Slack
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #   run: |
+      #     curl -X POST -H 'Content-type: application/json' --data "{\"text\":\":large_blue_circle: Test Execution Started.\"}" $SLACK_WEBHOOK_URL
 
       - uses: actions/checkout@v4
 
@@ -84,24 +84,24 @@ jobs:
     outputs:
       TEST_STATUS: ${{ steps.set_test_result.outputs.TEST_STATUS }}
 
-  notify:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Retrieve test status
-        id: get_test_status
-        run: echo "TEST_STATUS=${{ needs.test.outputs.TEST_STATUS }}" >> $GITHUB_ENV
+  # notify:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Retrieve test status
+  #       id: get_test_status
+  #       run: echo "TEST_STATUS=${{ needs.test.outputs.TEST_STATUS }}" >> $GITHUB_ENV
 
-      - name: Send Slack notification
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          GITHUB_PAGES_URL: "https://${{ github.repository_owner }}.github.io/qa-automation/allure-report"
-          TEST_STATUS: ${{ env.TEST_STATUS }}
+  #     - name: Send Slack notification
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  #         GITHUB_PAGES_URL: "https://${{ github.repository_owner }}.github.io/qa-automation/allure-report"
+  #         TEST_STATUS: ${{ env.TEST_STATUS }}
 
-        run: |
-          if [[ "${{ env.TEST_STATUS }}" == "passed" ]]; then
-            MESSAGE=":large_green_circle: Test Execution Completed! Tests passed. View the report at: $GITHUB_PAGES_URL"
-          else
-            MESSAGE=":red_circle: Test Execution Completed! Tests failed. View the report at: $GITHUB_PAGES_URL"
-          fi
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${MESSAGE}\"}" $SLACK_WEBHOOK_URL
+  #       run: |
+  #         if [[ "${{ env.TEST_STATUS }}" == "passed" ]]; then
+  #           MESSAGE=":large_green_circle: Test Execution Completed! Tests passed. View the report at: $GITHUB_PAGES_URL"
+  #         else
+  #           MESSAGE=":red_circle: Test Execution Completed! Tests failed. View the report at: $GITHUB_PAGES_URL"
+  #         fi
+  #         curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${MESSAGE}\"}" $SLACK_WEBHOOK_URL
