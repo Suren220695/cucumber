@@ -1,183 +1,107 @@
-name: Scheduled Test Run
+name: Test Execution With Threshold
 
 on:
-  # Scheduled run every day at 2:00 PM IST (8:30 AM UTC)
-  schedule:
-    - cron: "30 8 * * *"
-
-  # Manual trigger with optional tag selection
   workflow_dispatch:
     inputs:
-      tags:
-        description: "Cucumber tags to run (e.g., @smoke, @regression, @login)"
-        required: false
-        default: "@regression"
-        type: string
       environment:
-        description: "Environment to run tests against"
-        required: false
+        description: "Run environment"
+        required: true
         default: "production"
         type: choice
         options:
           - production
-          - staging
-          - development
+          - qa
+      cucumber_tags:
+        description: "Cucumber tags to run"
+        required: true
+        default: "@regression"
+        type: string
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Send Test Started Notification to Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\":large_blue_circle: Test Execution Started.\"}" $SLACK_WEBHOOK_URL
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: "20x"
-          cache: "npm"
+          node-version: "20.x"
 
       - name: Install dependencies
         working-directory: ./cucumber
         run: npm ci
 
-      - name: Install Playwright browsers
+      - name: Install Playwright Browsers
         working-directory: ./cucumber
         run: npx playwright install --with-deps
 
-      - name: Run Cucumber tests
+      - name: Run Playwright Cucumber tests
+        id: run_tests
         working-directory: ./cucumber
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            # Manual trigger - use provided tags or default to @regression
-            TAGS="${{ github.event.inputs.tags || '@regression' }}"
-            ENV="${{ github.event.inputs.environment || 'production' }}"
-            echo "Running tests with tags: $TAGS in environment: $ENV"
-            npx cucumber-js --tags "$TAGS" --world-parameters "{\"headless\": true, \"environment\": \"$ENV\"}" --format ./utils/reporter.js
+          npx cucumber-js --tags '${{ github.event.inputs.cucumber_tags || '@regression' }}' --world-parameters '{"headless": true, "environment": "${{ github.event.inputs.environment || 'production' }}"}'
+          echo "exit_code=$?" >> $GITHUB_ENV
+        continue-on-error: true
+
+      - name: Generate Allure report
+        working-directory: ./cucumber
+        run: |
+          npx allure generate allure-results --clean -o allure-report
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "surendaran@builder.io"
+          git config --global user.name "Suren2206"
+
+      - name: Create and commit GitHub Pages branch
+        run: |
+          git add .
+          git checkout --orphan gh-pages
+          git commit -m "Deploy Allure report to GitHub Pages"
+          git push -f origin gh-pages
+
+      - name: Clean up
+        run: |
+          git checkout main
+          git branch -D gh-pages
+
+      - name: Set test result output
+        id: set_test_result
+        run: |
+          if [[ "${{ env.exit_code }}" == "0" ]]; then
+            echo "TEST_STATUS=passed" >> $GITHUB_ENV
+            echo "::set-output name=TEST_STATUS::passed"
           else
-            # Scheduled run - use @regression tag
-            echo "Running scheduled tests with @regression tag"
-            npx cucumber-js --tags "@regression" --world-parameters '{"headless": true, "environment": "production"}' --format ./utils/reporter.js
+            echo "TEST_STATUS=failed" >> $GITHUB_ENV
+            echo "::set-output name=TEST_STATUS::failed"
           fi
+    outputs:
+      TEST_STATUS: ${{ steps.set_test_result.outputs.TEST_STATUS }}
 
-      - name: Generate HTML Report
-        working-directory: ./cucumber
-        run: |
-          npx cucumber-js --format html:cucumber-report.html --format json:cucumber-results.json
-          # Also generate Allure report
-          npm run allure:generate
-
-      - name: Upload Cucumber HTML Report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cucumber-html-report
-          path: cucumber/cucumber-report.html
-          retention-days: 30
-
-      - name: Upload Allure Report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: allure-report
-          path: cucumber/allure-report
-          retention-days: 30
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-results
-          path: cucumber/cucumber-results.json
-          retention-days: 30
-
-      - name: Publish Test Results
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Cucumber Test Results
-          path: cucumber/cucumber-results.json
-          reporter: cucumber-json
-          fail-on-error: false
-
-  slack-notification:
-    runs-on: ubuntu-latest
+  notify:
     needs: test
-    if: always()
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Download Test Results
-        uses: actions/download-artifact@v4
-        with:
-          name: test-results
-          path: ./test-results
+      - name: Retrieve test status
+        id: get_test_status
+        run: echo "TEST_STATUS=${{ needs.test.outputs.TEST_STATUS }}" >> $GITHUB_ENV
 
-      - name: Parse Test Results
-        id: parse-results
-        run: |
-          if [ -f "./test-results/cucumber-results.json" ]; then
-            # Extract test results using jq
-            TOTAL_SCENARIOS=$(jq '[.[] | .elements[] | select(.type == "scenario")] | length' ./test-results/cucumber-results.json)
-            PASSED_SCENARIOS=$(jq '[.[] | .elements[] | select(.type == "scenario" and .steps[].result.status == "passed")] | length' ./test-results/cucumber-results.json)
-            FAILED_SCENARIOS=$(jq '[.[] | .elements[] | select(.type == "scenario" and .steps[].result.status == "failed")] | length' ./test-results/cucumber-results.json)
-            SKIPPED_SCENARIOS=$(jq '[.[] | .elements[] | select(.type == "scenario" and .steps[].result.status == "skipped")] | length' ./test-results/cucumber-results.json)
-            
-            echo "total=$TOTAL_SCENARIOS" >> $GITHUB_OUTPUT
-            echo "passed=$PASSED_SCENARIOS" >> $GITHUB_OUTPUT
-            echo "failed=$FAILED_SCENARIOS" >> $GITHUB_OUTPUT
-            echo "skipped=$SKIPPED_SCENARIOS" >> $GITHUB_OUTPUT
-          else
-            echo "total=0" >> $GITHUB_OUTPUT
-            echo "passed=0" >> $GITHUB_OUTPUT
-            echo "failed=0" >> $GITHUB_OUTPUT
-            echo "skipped=0" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Send Slack Notification
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          channel: "#test-results"
-          text: |
-            🧪 *Test Run Results*
-
-            **Trigger:** ${{ github.event_name == 'schedule' && 'Scheduled (2PM IST)' || 'Manual' }}
-            **Environment:** ${{ github.event.inputs.environment || 'production' }}
-            **Tags:** ${{ github.event.inputs.tags || '@regression' }}
-
-            **Results:**
-            ✅ Passed: ${{ steps.parse-results.outputs.passed }}
-            ❌ Failed: ${{ steps.parse-results.outputs.failed }}
-            ⏭️ Skipped: ${{ steps.parse-results.outputs.skipped }}
-            📊 Total: ${{ steps.parse-results.outputs.total }}
-
-            **Status:** ${{ job.status == 'success' && '✅ All tests passed!' || '❌ Some tests failed' }}
-
-            **Reports:**
-            • [Cucumber HTML Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            • [Allure Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-
-            **Commit:** ${{ github.sha }}
-            **Branch:** ${{ github.ref_name }}
+      - name: Send Slack notification
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GITHUB_PAGES_URL: "https://${{ github.repository_owner }}.github.io/qa-automation/allure-report"
+          TEST_STATUS: ${{ env.TEST_STATUS }}
 
-  deploy-report:
-    runs-on: ubuntu-latest
-    needs: test
-    if: always()
-
-    steps:
-      - name: Download HTML Report
-        uses: actions/download-artifact@v4
-        with:
-          name: cucumber-html-report
-          path: ./report
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./report
-          destination_dir: test-reports/${{ github.run_number }}
+        run: |
+          if [[ "${{ env.TEST_STATUS }}" == "passed" ]]; then
+            MESSAGE=":large_green_circle: Test Execution Completed! Tests passed. View the report at: $GITHUB_PAGES_URL"
+          else
+            MESSAGE=":red_circle: Test Execution Completed! Tests failed. View the report at: $GITHUB_PAGES_URL"
+          fi
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${MESSAGE}\"}" $SLACK_WEBHOOK_URL
