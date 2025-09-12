@@ -65,7 +65,7 @@ jobs:
 
       - name: Clean up
         run: |
-          git checkout main
+          git checkout features/defender
           git branch -D gh-pages
 
       - name: Set test result output
