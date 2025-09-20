@@ -20,7 +20,11 @@
       "email": "max@michigangreenhousecompany.com",
       "password": "Test@123",
       "role": "admin"
-    }
+    },
+     "multiple":{
+        "email": "troy@wisconsingreenhousecompany.com",
+        "password": "Test@123"
+      }
     ,
       "customer": {
         "email": "turnerjd@wwt.net",
@@ -44,6 +48,10 @@
       },
       "admin": {
         "email": "max@michigangreenhousecompany.com",
+        "password": "Test@123"
+      },
+      "multiple":{
+        "email": "troy@wisconsingreenhousecompany.com",
         "password": "Test@123"
       }
     },

@@ -52,3 +52,5 @@ Then('the PDF file should be uploaded and validated successfully', async functio
 Then('I click the {string} button in the Sales Estimate page', async function () {
     await salesEstimationPage.clickCreateEstimateButton();
 })
+
+

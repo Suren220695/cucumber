@@ -11,7 +11,7 @@ class createBidPage {
         //input[@placeholder="MMMM DD, YYYY"]
         this.dateInput = this.page.locator('//input[@placeholder="MMMM DD, YYYY"]');
         ////div[@title="P.3"]
-        this.greenhouseLuxuriousInput = this.page.locator('//div[@title="P.3"]');
+        this.greenhouseLuxuriousInput = this.page.locator('//div[@data-tradeoid="P.3"]');
 
         //input[@placeholder="MMMM DD, YYYY hh:mm aa"]
         this.timeInput = this.page.locator('//input[@placeholder="MMMM DD, YYYY hh:mm aa"]');
@@ -481,7 +481,6 @@ if (currentUrl.includes("commondashboard")) {
         await childButton.waitFor({ state: 'visible', timeout: 5000 });
         await childButton.click();
     }
-
 
     /**
      * Reusable method to add BOM
