@@ -49,6 +49,18 @@ class createBidPage {
         this.taxPercentageInput = this.page.locator("//span[text()='percentage']/ancestor::div[contains(@class,'MuiInputBase-root')]//input")
 
 
+        // Define question texts as constants
+        this.WIDTH_QUESTION = "Specify the desired Width of the Greenhouse";
+        this.LENGTH_QUESTION = "Specify the desired Length of the Greenhouse";
+
+        // Define selectors for width inputs
+        this.widthFeetInput = this.page.locator(`//div[contains(@class, 'MuiStack-root')][following-sibling::p[contains(text(), 'Sp')]]//input[@placeholder='Feet']`);
+        this.widthInchesInput = this.page.locator(`//div[contains(@class, 'MuiStack-root')][following-sibling::p[contains(text(), 'Sp')]]//input[@placeholder='Inches']`);
+
+        // Define selectors for length inputs
+        this.lengthFeetInput = this.page.locator(`//div[contains(@class, 'MuiStack-root')][following-sibling::p[contains(text(), 'Sp')]]//input[@placeholder='Feet']`);
+        this.lengthInchesInput = this.page.locator(`//div[contains(@class, 'MuiStack-root')][following-sibling::p[contains(text(), 'Sp')]]//input[@placeholder='Inches']`);
+
 
     }
 
@@ -56,7 +68,7 @@ class createBidPage {
 
         await this.page.waitForURL('**/salesestimate', { timeout: 10000 });
         console.log("clickCreateBidButton");
-         await PageUtils.waitForPageLoad(this.page);
+        await PageUtils.waitForPageLoad(this.page);
         //  await this.dashBoardTitle.waitFor({ state: 'visible' });
         //  await PageUtils.waitForElementToBeStable(this.dashBoardTitle, this.page);
         await this.page.waitForTimeout(3000);
@@ -68,16 +80,16 @@ class createBidPage {
         const currentUrl = await this.page.url();
         console.log("Current URL after clicking Create Bid: " + currentUrl);
         // Check if URL contains "commondashboard"
-if (currentUrl.includes("commondashboard")) {
-    console.log("✅ URL contains commondashboard");
-    // 👉 your code logic here
-     await button.click();
-} else if (currentUrl.includes("salesestimate")) {
-    await button.click();
-    
-} {
-    console.log("❌ URL does not contain commondashboard");
-}
+        if (currentUrl.includes("commondashboard")) {
+            console.log("✅ URL contains commondashboard");
+            // 👉 your code logic here
+            await button.click();
+        } else if (currentUrl.includes("salesestimate")) {
+            await button.click();
+
+        } {
+            console.log("❌ URL does not contain commondashboard");
+        }
     }
 
 
@@ -169,6 +181,7 @@ if (currentUrl.includes("commondashboard")) {
     }
 
     async selectGreenhouse(greenhouseName) {
+
         await this.greenhouseLuxuriousInput.click();
     }
 
@@ -722,6 +735,27 @@ if (currentUrl.includes("commondashboard")) {
 
     }
 
+
+     /**
+   * Enter width dimensions for the greenhouse
+   * @param {string} feet - Width in feet
+   * @param {string} inches - Width in inches
+   */
+  async enterGreenhouseWidth(feet, inches) {
+    await this.widthFeetInput.fill(feet);
+    await this.widthInchesInput.fill(inches);
+  }
+// selectGreenhouse
+// Greenhouse Commercial
+  /**
+   * Enter length dimensions for the greenhouse
+   * @param {string} feet - Length in feet
+   * @param {string} inches - Length in inches
+   */
+  async enterGreenhouseLength(feet, inches = "0") {
+    await this.lengthFeetInput.fill(feet);
+    await this.lengthInchesInput.fill(inches);
+  }
 
 
 

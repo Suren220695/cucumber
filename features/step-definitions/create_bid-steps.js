@@ -7,16 +7,15 @@ setDefaultTimeout(90 * 1000);
 let bidCreationPage;
 
 
-
 When('I click the {string} button', async function (buttonText) {
     console.log("I click the " + buttonText + " button");
     bidCreationPage = new createBidPage(this.page);
     await bidCreationPage.page.waitForTimeout(3000);
-    if(buttonText == "Contract"){
+    if (buttonText == "Contract") {
         await bidCreationPage.clickContractButton();
-    }else if(buttonText == "Create Bid"){
+    } else if (buttonText == "Create Bid") {
         await bidCreationPage.clickCreateBidButton();
-    }else{
+    } else {
         await bidCreationPage.clickCreateBidButton();
     }
     console.log("I click the " + buttonText + " button");
@@ -327,7 +326,6 @@ Then('validate the active tab is {string} is visible', async function (tabName) 
 When('I fill the Tax Terms tab with details', async function (dataTable) {
     await bidCreationPage.page.waitForTimeout(3000);
     const taxTermsDetails = dataTable.hashes(); // take first row from table
-
     for (const taxTermDetails of taxTermsDetails) {
         const { taxTerm, taxName, taxPercentage } = taxTermDetails;
         console.log("I fill the Tax Terms tab with details: " + taxTerm + " " + taxName + " " + taxPercentage);
@@ -341,6 +339,31 @@ When('I send and approve the estimate', async () => {
     await bidCreationPage.sendAndApproveEstimate();
 })
 
+
+/**
+ * Step definition for entering greenhouse width in feet and inches
+ */
+When('the user enters {string} {string} as the Width of the Greenhouse in Feet and Inches', async function (feet, inches) {
+    await bidCreationPage.enterGreenhouseWidth(feet, inches);
+});
+
+/**
+ * Step definition for entering greenhouse length with both feet and inches
+ */
+When('the user enters {string} {string} as the Length of the Greenhouse in Feet and Inches', async function (feet, inches) {
+    await bidCreationPage.enterGreenhouseLength(feet, inches);
+});
+
+/**
+ * Step definition for entering greenhouse length with only feet specified
+ */
+When('the user enters {string} as the Length of the Greenhouse in Feet and Inches', async function (feet) {
+    await bidCreationPage.enterGreenhouseLength(feet);
+});
+
+When('the user fills BOM details as Gantt tab:', () => {
+  // Write code here that turns the phrase above into concrete actions
+})
 
 
 

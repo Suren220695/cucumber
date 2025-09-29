@@ -4,7 +4,6 @@ const PageUtilClassName = require("./commonUtils/PageUtils");
 class ProfilePage {
 
 
-
     constructor(page) {
         this.page = page;
         this.profileAvatar = this.page.locator('//div[contains(@class,"MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault topbar-profile-avatar")]');

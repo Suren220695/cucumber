@@ -1,3 +1,4 @@
+const { expect } = require("playwright/test")
 
 class AdminManagementPage {
     constructor(page) {
@@ -44,21 +45,23 @@ class AdminManagementPage {
             await this.page.waitForURL(domainWithProtocol + this.path, { timeout: 10000 });
         } catch (error) {
             console.log(error);
-
             await this.goto()
         }
 
     }
 
 
-    async verifyPageTitles() {
-
+    async verifyPageTitles(expectedTitles) {
         let titles = await this.pageTitles.allTextContents();
-
         console.log(titles);
+        // expect(titles).toEqual(expectedTitles)
+        // expect(titles).toContain(expectedTitles)
+        
 
     }
 
+
+    
 
 
 

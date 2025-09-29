@@ -8,9 +8,13 @@ Feature: admin Management
     And I click "Login" button
     Then I enter credentials based on role "multiple"
 
- Scenario: Navigate to profile page from avatar icon
+  Scenario: Navigate to profile page from avatar icon
     When I click the profile side menu
     Then I should be navigated to the adminManagement
     And I should see the admin page titles
-
-
+      | Employee Management |
+      | Vendor Management   |
+      | Customer Management |
+      | Tool Management     |
+      | Material Management |
+      | Resource Management |

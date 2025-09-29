@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cucumber-js",
     "test:headless": "cucumber-js --world-parameters \"{\\\"headless\\\": true}\"",
-    "test:headed": "cucumber-js --world-parameters \"{\\\"headless\\\": false}\" --tags @adminManagement",
+    "test:headed": "cucumber-js --world-parameters \"{\\\"headless\\\": false}\" --tags @gantt-chart-estimation",
     "test:login": "cucumber-js --tags @login",
     "test:trade-creation": "cucumber-js --tags @trade-creation",
     "test:happy-path": "cucumber-js --tags @happy-path",
@@ -41,5 +41,8 @@
     "@cucumber/cucumber": "^10.0.1",
     "@playwright/test": "^1.40.0",
     "playwright": "^1.40.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2"
   }
 }
