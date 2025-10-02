@@ -1,12 +1,13 @@
 Feature: gant estimation Feature
-Background:
+
+  Background:
     Given I am on the login page
     When I launch the application URL
     Then the application should be loaded successfully
     And I click "Login" button
     Then I enter credentials based on role "sales"
 
-@gantt-chart-estimation
+  @gantt-chart-estimation
   Scenario: Sales user creates a bid for  new foundation
     When I click the "Create Bid" button
     And I select customer "Mike    Wade"
@@ -26,7 +27,7 @@ Background:
     When the user enters "30" into the wind exposure field
     Given the user clicks the "Trade Question" tab
     When the user enters "6" "4" as the Width of the Greenhouse in Feet and Inches
-    And the user enters "6" as the Length of the Greenhouse in Feet and Inches    
+    And the user enters "6" as the Length of the Greenhouse in Feet and Inches
     And the user selects "I want to build a New Foundation" as the type of foundation
     And the user enters "90" as the expected Snow Load
     And the user enters "100" as the expected Wind Load
@@ -35,7 +36,7 @@ Background:
     When user selects Maximum Height Limit as "Yes"
     # And user selects Roof Pitch Preference as "Standard 6/12 Roof Pitch"
     # And user selects Glazing Preference as "Standard Polycarb (Clear 8MM Twin Wall)"  doubt but cler wil now 
-    And user selects Doors option as "No" 
+    And user selects Doors option as "No"
     And I click "Next"
     And I click "Submit"
     And I click "Proceed"
@@ -65,9 +66,9 @@ Background:
     And I click "Create Estimate"
     Then validate the active tab is "Tax" is visible
     When I fill the Tax Terms tab with details
-      | taxTerm | taxName | taxPercentage |
-      | PO      | State tax    |    0 |
-      | Invoice | State tax    |    0 |
+      | taxTerm | taxName   | taxPercentage |
+      | PO      | State tax |             0 |
+      | Invoice | State tax |             0 |
     And I click "update"
     And I click "ok"
     Then validate the active tab is "Gantt Tasks" is visible

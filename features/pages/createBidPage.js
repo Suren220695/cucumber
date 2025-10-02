@@ -495,6 +495,12 @@ class createBidPage {
         await childButton.click();
     }
 
+
+    async clickRedActionButtonInGanttTab() {
+        await this.page.waitForTimeout(3000);
+
+    }
+
     /**
      * Reusable method to add BOM
      * @param {object} page - Playwright Page instance
@@ -736,26 +742,35 @@ class createBidPage {
     }
 
 
-     /**
-   * Enter width dimensions for the greenhouse
-   * @param {string} feet - Width in feet
-   * @param {string} inches - Width in inches
-   */
-  async enterGreenhouseWidth(feet, inches) {
-    await this.widthFeetInput.fill(feet);
-    await this.widthInchesInput.fill(inches);
-  }
-// selectGreenhouse
-// Greenhouse Commercial
-  /**
-   * Enter length dimensions for the greenhouse
-   * @param {string} feet - Length in feet
-   * @param {string} inches - Length in inches
-   */
-  async enterGreenhouseLength(feet, inches = "0") {
-    await this.lengthFeetInput.fill(feet);
-    await this.lengthInchesInput.fill(inches);
-  }
+    /**
+  * Enter width dimensions for the greenhouse
+  * @param {string} feet - Width in feet
+  * @param {string} inches - Width in inches
+  */
+    async enterGreenhouseWidth(feet, inches) {
+        await this.widthFeetInput.fill(feet);
+        await this.widthInchesInput.fill(inches);
+    }
+    // selectGreenhouse
+    // Greenhouse Commercial
+    /**
+     * Enter length dimensions for the greenhouse
+     * @param {string} feet - Length in feet
+     * @param {string} inches - Length in inches
+     */
+    async enterGreenhouseLength(feet, inches = "0") {
+        await this.lengthFeetInput.fill(feet);
+        await this.lengthInchesInput.fill(inches);
+    }
+
+
+    //   aria-label="Gantt view"
+    async clickGanttTab() {
+        await this.page.locator('[aria-label="Gantt view"]').waitFor({ state: 'visible' });
+        await this.page.locator('[aria-label="Gantt view"]').scrollIntoViewIfNeeded();
+        await this.page.locator('[aria-label="Gantt view"]').click();
+    }
+
 
 
 

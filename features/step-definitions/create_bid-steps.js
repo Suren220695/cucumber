@@ -45,6 +45,7 @@ When('I choose the greenhouse {string}', async function (greenhouseName) {
 When('I choose duration {string} {string} {string} {string}', async function (year, day, hours, minutes) {
     console.log("I choose duration " + year + " " + day + " " + hours + " " + minutes);
     await bidCreationPage.selectDateAndDuration(year, day, hours, minutes);
+    // this.page.getByTestId("demo-positioned-button").click();
 
 });
 
@@ -161,7 +162,7 @@ When('the user enters {string} into the wind exposure field', async function (wi
 // And the user enters "20" as the Length of the Greenhouse in feet
 // And the user enters "0" as the Length of the Greenhouse in inches
 // And the user selects "I want to build a New Foundation"
-// And the user enters "90" as the expected Snow Load
+// And the user ent,jhjers "90" as the expected Snow Load
 // And the user enters "100" as the expected Wind Load
 // And the user selects "Home Attached" as the Greenhouse type
 // And the user selects "Lean To" as the type of Home Attached setup
@@ -174,6 +175,8 @@ Given('the user clicks the {string} tab', async function (tabName) {
         await bidCreationPage.clickBomTab();
     } else if (tabName == "TAX") {
         await bidCreationPage.clickGanttTasksTab();
+    }else if (tabName == "Gantt") {
+        await bidCreationPage.clickGanttTab();
     }
 });
 
@@ -361,9 +364,53 @@ When('the user enters {string} as the Length of the Greenhouse in Feet and Inche
     await bidCreationPage.enterGreenhouseLength(feet);
 });
 
-When('the user fills BOM details as Gantt tab:', () => {
-  // Write code here that turns the phrase above into concrete actions
+When('the user fills BOM details as Gantt tab:', async function (dataTable) {
+
+    const bomDetails = dataTable.hashes(); // take first row from table
+    await bidCreationPage.page.waitForTimeout(3000);
+
+    for (const bomDetail of bomDetails) {
+        const { vendorName, vendorAddress, product, productAddress, optionValue, quantity } = bomDetail;
+        console.log("the user fills BOM details: " + vendorName + " " + vendorAddress + " " + product + " " + productAddress + " " + optionValue + " " + quantity);
+
+        await bidCreationPage.page.waitForTimeout(3000);
+        await bidCreationPage.clickRedActionButton();
+        await bidCreationPage.clickEditButton();
+        await bidCreationPage.clickBomTab();
+        await bidCreationPage.addBom({
+            vendorName,
+            vendorAddress,
+            product,
+            productAddress,
+            optionValue,
+            quantity
+        });
+        await bidCreationPage.clickSaveButton();
+        await bidCreationPage.clickUpdateButton();
+        await bidCreationPage.clickOkButton();
+    }
+
 })
+
+Given('I edit a task with following details  as Gantt tab', async function (dataTable)  {
+  
+    await bidCreationPage.page.waitForTimeout(3000);
+    const editTaskDetails = dataTable.hashes(); // take first row from table
+    for (const editTaskDetail of editTaskDetails) {
+        const { value, unit } = editTaskDetail;
+        console.log("I edit a task with following details: " + value + " " + unit);
+        await bidCreationPage.clickRedActionButton();
+        await bidCreationPage.clickEditButton();
+        await bidCreationPage.enterEditTaskInput(value);
+        await bidCreationPage.selectEditTaskUnitSelection(unit);
+        await bidCreationPage.clickUpdateButton();
+        await bidCreationPage.clickOkButton();
+    }
+})
+
+
+
+
 
 
 
